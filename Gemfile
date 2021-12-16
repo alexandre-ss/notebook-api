@@ -36,6 +36,7 @@ group :development do
   gem 'spring'
   # to generate data
   gem 'faker'
+  gem 'pry-rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
