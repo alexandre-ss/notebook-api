@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 namespace :dev do
-  desc "setup the development environment"
+  desc 'setup the development environment'
   task setup: :environment do
-    puts "recreating database..."
-    %x(rails db:drop db:create db:migrate)
-    puts "creating contact kind..."
-    contact_kinds = %w(Amigo, Comercial, Conhecido)
+    puts 'recreating database...'
+    `rails db:drop db:create db:migrate`
+    puts 'creating contact kind...'
+    contact_kinds = %w[Amigo Comercial Conhecido]
 
     contact_kinds.each do |kind|
       Kind.create!(
@@ -12,27 +14,26 @@ namespace :dev do
       )
     end
 
-    puts "Creating new contacts..."
-    100.times do |i|
+    puts 'Creating new contacts...'
+    100.times do |_i|
       Contact.create!(
         name: Faker::Name.name,
         email: Faker::Internet.email,
         birthdate: Faker::Date.between(from: 65.years.ago, to: 18.years.ago),
         kind_id: 1
-    )
+      )
     end
 
-    puts "creating phone numbers..."
+    puts 'creating phone numbers...'
     Contact.all.each do |contact|
-      Random.rand(5).times do |i|
+      Random.rand(5).times do |_i|
         phone = Phone.create(number: Faker::PhoneNumber.cell_phone, contact_id: contact.id)
         contact.phones << phone
         contact.save!
-
       end
     end
 
-    puts "creating addresses..."
+    puts 'creating addresses...'
     Contact.all.each do |contact|
       Address.create(
         street: Faker::Address.street_address,
@@ -40,7 +41,6 @@ namespace :dev do
         contact: contact
       )
     end
-    puts "up to date..."
+    puts 'up to date...'
   end
-
 end

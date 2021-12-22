@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
+# class for kind of contacts: 1 - n
 class KindsController < ApplicationController
-  before_action :set_kind, only: [:show, :update, :destroy]
+  before_action :set_kind, only: %i[show update destroy]
 
   # GET /kinds
   def index
@@ -39,13 +42,15 @@ class KindsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_kind
-      @kind = Kind.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def kind_params
-      params.require(:kind).permit(:description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_kind
+    kind = params[:contact_id] ? Contact.find(params[:contact_id]).kind_id : Kind.find(params[:id])
+    @kind = Kind.find(kind)
+  end
+
+  # Only allow a list of trusted parameters through.
+  def kind_params
+    params.require(:kind).permit(:description)
+  end
 end
