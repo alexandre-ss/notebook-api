@@ -8,9 +8,11 @@ Rails.application.routes.draw do
 
     resource :phones, only: :show
     resource :phones, only: :show, path: 'relationships/phones'
+    resource :phone, only: %i[update create destroy]
+    resource :phone, only: %i[update create destroy], path: 'relationships/address'
 
-    resource :address, only: :show
-    resource :address, only: :show, path: 'relationships/address'
+    resource :address, only: %i[show update create destroy]
+    resource :address, only: %i[show update create destroy], path: 'relationships/address'
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
