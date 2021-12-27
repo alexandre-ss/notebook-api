@@ -2,8 +2,19 @@
 
 # class for kind of contacts: 1 - n
 class KindsController < ApplicationController
-  before_action :set_kind, only: %i[show update destroy]
 
+  ###### token auth
+  TOKEN = "secret"
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+  ######
+
+  ###### Basic auth
+  #include ActionController::HttpAuthentication::Basic::ControllerMethods
+  #http_basic_authenticate_with name: 'admin', password: '123456', only: %i[create update destroy]
+  ######
+
+  before_action :set_kind, only: %i[show update destroy]
+  before_action :authenticate, only: %i[create update destroy]
   # GET /kinds
   def index
     @kinds = Kind.all
@@ -45,10 +56,18 @@ class KindsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_kind
-    kind = params[:contact_id] ? Contact.find(params[:contact_id]).kind_id : Kind.find(params[:id])
+    kind = params[:contact_id] ? Contact.find(params[:contact_id]).kind_id : Kind.find(params[:id]).id
     @kind = Kind.find(kind)
   end
 
+  def authenticate
+    authenticate_or_request_with_http_token do |token, options|
+      ActiveSupport::SecurityUtils.secure_compare(
+        ::Digest::SHA256.hexdigest(token),
+        ::Digest::SHA256.hexdigest(TOKEN)
+      )
+    end
+  end
   # Only allow a list of trusted parameters through.
   def kind_params
     params.require(:kind).permit(:description)
