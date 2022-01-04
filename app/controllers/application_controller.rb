@@ -2,11 +2,11 @@
 
 # main class of a rails project
 class ApplicationController < ActionController::API
-  before_action :ensure_json_request
-
-  def ensure_json_request
-    return if request.headers['Accept'] =~ /vnd\.api\+json/
-
-    render nothing: true, status: 406
-  end
+  include DeviseTokenAuth::Concerns::SetUserByToken
+  #before_action :ensure_json_request
+  #PASSWORD = "3NCR1PT3DP4SSW0RD"
+  #def ensure_json_request
+  #  return if request.headers['Accept'] =~ /vnd\.api\+json/
+  #  render nothing: true, status: 406
+  #end
 end

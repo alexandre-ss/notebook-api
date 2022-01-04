@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.0'
+ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
@@ -45,3 +45,5 @@ end
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'rails-i18n', '~> 6.0.0' # For 6.0.0 or higher
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'jwt'
+gem 'devise_token_auth'
